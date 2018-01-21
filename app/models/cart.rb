@@ -16,8 +16,15 @@ class Cart < ActiveRecord::Base
         result
     end 
 
-    def add_item(id)
-        self.line_items.new(cart_id: self.id, item_id: id)
+    def add_item(itemid)
+        # binding.pry
+        line_item = line_items.find_by(item_id: itemid)
+        if items.ids.include?(itemid)
         
+            line_item.update(quantity: (line_item.quantity + 1))
+            line_item
+        else 
+            line_items.new(cart_id: self.id, item_id: itemid)
+        end 
     end 
 end
