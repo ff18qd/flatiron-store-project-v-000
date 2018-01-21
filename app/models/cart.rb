@@ -16,7 +16,8 @@ class Cart < ActiveRecord::Base
         result
     end 
 
-    def add_item(item)
+    def add_item(id)
+        self.line_items.new(cart_id: self.id, item_id: id)
         
     end 
 end
