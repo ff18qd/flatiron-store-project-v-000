@@ -17,14 +17,26 @@ class Cart < ActiveRecord::Base
     end 
 
     def add_item(itemid)
-        # binding.pry
         line_item = line_items.find_by(item_id: itemid)
-        if items.ids.include?(itemid)
-        
+        if line_item
+        # if items.ids.include?(itemid)
+            # binding.pry
             line_item.update(quantity: (line_item.quantity + 1))
+            
             line_item
         else 
-            line_items.new(cart_id: self.id, item_id: itemid)
+            line_items.build(cart_id: self.id, item_id: itemid)
         end 
     end 
+    
+    def checkout
+        # binding.pry
+        self.line_items.each do |line_item|
+            quantity = line_item.quantity
+            line_item.item.inventory = line_item.item.inventory - quantity
+            line_item.item.save
+        end 
+        self.status = "submitted"
+    end 
+    
 end
